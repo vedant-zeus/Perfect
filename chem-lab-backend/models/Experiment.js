@@ -2,11 +2,12 @@ import mongoose from "mongoose";
 
 /* ------------------- STEP SCHEMA ------------------- */
 /*
-Each action performed during experiment:
+Each action during experiment:
 - add_solvent
 - add_solute
 - reaction_triggered
 */
+
 const stepSchema = new mongoose.Schema(
   {
     action: {
@@ -20,6 +21,15 @@ const stepSchema = new mongoose.Schema(
       required: true,
     },
 
+    formula: {
+      type: String,
+    },
+
+    category: {
+      type: String,
+      enum: ["acid", "base", "salt", "solvent"],
+    },
+
     temperature: {
       type: Number,
       required: true,
@@ -30,12 +40,30 @@ const stepSchema = new mongoose.Schema(
       required: true,
     },
 
+    reactionType: {
+      type: String,
+    },
+
+    equation: {
+      type: String,
+    },
+
+    precipitate: {
+      type: Boolean,
+      default: false,
+    },
+
+    gas: {
+      type: Boolean,
+      default: false,
+    },
+
     timestamp: {
       type: Date,
       default: Date.now,
     },
   },
-  { _id: false } // prevent extra _id for steps
+  { _id: false }
 );
 
 /* ------------------- MAIN EXPERIMENT SCHEMA ------------------- */
@@ -62,6 +90,22 @@ const experimentSchema = new mongoose.Schema({
     solutes: {
       type: [String],
       default: [],
+    },
+
+    reactionType: {
+      type: String,
+    },
+
+    equation: {
+      type: String,
+    },
+
+    precipitate: {
+      type: Boolean,
+    },
+
+    gas: {
+      type: Boolean,
     },
   },
 
